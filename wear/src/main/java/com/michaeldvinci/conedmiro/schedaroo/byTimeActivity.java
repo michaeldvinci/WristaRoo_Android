@@ -27,7 +27,7 @@ public class byTimeActivity extends Activity  implements DataApi.DataListener,Go
     ArrayList<String> choicesList;
     ArrayAdapter adapter;
     ListView list;
-    ArrayList<String> data;
+    ArrayList<String> data = new ArrayList<>();
     String dayExtra;
     String howExtra;
     String schedExtra;
@@ -195,6 +195,8 @@ public class byTimeActivity extends Activity  implements DataApi.DataListener,Go
     "9:00 - 11:30", "Billy Joel", what
     };
 
+    static String[] error = {"No Data Supplied"};
+
     GoogleApiClient googleApiClient;
 
     @Override
@@ -225,7 +227,11 @@ public class byTimeActivity extends Activity  implements DataApi.DataListener,Go
                     setStage(thTime);
                 }
                 if(schedExtra.equals("Custom Schedule")) {
-                    adapter = new ArrayAdapter<>(this, R.layout.da_item, data);
+                    if (data.size() > 0) {
+                        adapter = new ArrayAdapter<>(this, R.layout.da_item, data);
+                    } else {
+                        setStage(error);
+                    }
                 }
                 break;
             case "Friday":
@@ -238,7 +244,6 @@ public class byTimeActivity extends Activity  implements DataApi.DataListener,Go
                 setStage(suTime);
                 break;
         }
-        //adapter = new ArrayAdapter<>(this, R.layout.da_item, choicesList);
         stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
             @Override
             public void onLayoutInflated(WatchViewStub stub) {
@@ -252,7 +257,6 @@ public class byTimeActivity extends Activity  implements DataApi.DataListener,Go
         choicesList = new ArrayList<>(Arrays.asList(dayStage));
         adapter = new ArrayAdapter<>(this, R.layout.da_item, choicesList);
         adapter.notifyDataSetChanged();
-        //return choicesList;
     }
 
 
