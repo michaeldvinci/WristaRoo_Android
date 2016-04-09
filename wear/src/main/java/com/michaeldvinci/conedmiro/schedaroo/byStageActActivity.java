@@ -62,7 +62,6 @@ public class byStageActActivity extends Activity {
     static ArrayList<String> choicesList;
     ArrayAdapter adapter;
     ListView list;
-    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

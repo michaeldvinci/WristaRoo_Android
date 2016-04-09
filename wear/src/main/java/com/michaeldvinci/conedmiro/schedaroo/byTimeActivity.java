@@ -23,7 +23,7 @@ import com.google.android.gms.wearable.Wearable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class byTimeActivity extends Activity  implements DataApi.DataListener,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener   {
+public class byTimeActivity extends Activity {
     ArrayList<String> choicesList;
     ArrayAdapter adapter;
     ListView list;
@@ -197,18 +197,9 @@ public class byTimeActivity extends Activity  implements DataApi.DataListener,Go
 
     static String[] error = {"No Data Supplied"};
 
-    GoogleApiClient googleApiClient;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-        googleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(Wearable.API)
-                .build();
 
         setContentView(R.layout.activity_main);
         final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
@@ -257,50 +248,5 @@ public class byTimeActivity extends Activity  implements DataApi.DataListener,Go
         choicesList = new ArrayList<>(Arrays.asList(dayStage));
         adapter = new ArrayAdapter<>(this, R.layout.da_item, choicesList);
         adapter.notifyDataSetChanged();
-    }
-
-
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        Wearable.DataApi.addListener(googleApiClient, this);
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        googleApiClient.connect();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Wearable.DataApi.removeListener(googleApiClient, this);
-        googleApiClient.disconnect();
-    }
-
-    @Override
-    public void onDataChanged(DataEventBuffer dataEvents) {
-        for (DataEvent event : dataEvents) {
-            if (event.getType() == DataEvent.TYPE_CHANGED) {
-                // DataItem changed
-                DataItem item = event.getDataItem();
-                if (item.getUri().getPath().compareTo("/wristaroo/customschedule") == 0) {
-                    DataMap dataMap = DataMapItem.fromDataItem(item).getDataMap();
-                    data = dataMap.getStringArrayList("schedule");
-                }
-            } else if (event.getType() == DataEvent.TYPE_DELETED) {
-                // DataItem deleted
-            }
-        }
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
     }
 }

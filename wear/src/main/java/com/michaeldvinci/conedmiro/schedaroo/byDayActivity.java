@@ -48,20 +48,3 @@ public class byDayActivity extends Activity {
         });
     }
 }
-
-/**
- *
- if(getIntent().getExtras().getString("schedule") != null) {
- switch (getIntent().getExtras().getString("schedule")) {
- case "Custom":
- break;
- case "Full":
- intent = new Intent(MainActivity.this, byDayActivity.class);
- intent.putExtra("schedule", "Full");
- startActivity(intent);
- break;
- default:
- break;
- }
- }
- */
