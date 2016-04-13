@@ -8,9 +8,9 @@ import com.google.android.gms.wearable.DataMap;
 public class Act {
 
     public final String name;
-    public final String location;
-    public final String day;
     public final String time;
+    public final String day;
+    public final String location;
 
     public Act(String name, String time, String day, String location) {
 

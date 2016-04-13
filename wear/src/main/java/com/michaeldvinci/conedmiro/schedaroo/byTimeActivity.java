@@ -28,9 +28,13 @@ public class byTimeActivity extends Activity {
     ArrayAdapter adapter;
     ListView list;
     ArrayList<String> data = new ArrayList<>();
+    customSched customSched;
+    ArrayList<String> customAL = new ArrayList<>();
     String dayExtra;
     String howExtra;
     String schedExtra;
+    GoogleApiClient mGoogleApiClient;
+    private final String WEAR_MESSAGE_PATH = "com.michaeldvinci.key.schedule";
 
     static String xmas = "Christmas Barn";
     static String other = "The Other Tent";

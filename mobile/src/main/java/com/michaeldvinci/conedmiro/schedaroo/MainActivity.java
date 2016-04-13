@@ -7,31 +7,48 @@ package com.michaeldvinci.conedmiro.schedaroo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.wearable.DataApi;
+import com.google.android.gms.wearable.DataMap;
+import com.google.android.gms.wearable.MessageApi;
+import com.google.android.gms.wearable.Node;
+import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
     Set<String> tasksSet;
     ArrayList<String> actsList;
     ArrayAdapter adapter;
     ListView list;
-    GoogleApiClient googleApiClient;
+    Button btnSend;
+    GoogleApiClient mGoogleApiClient;
+    private final String WEAR_MESSAGE_PATH = "com.michaeldvinci.key.schedule";
+    private final String TIME_MESSAGE_PATH = "com.michaeldvinci.key.timestamp";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +70,13 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Wearable.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+
         adapter = new ArrayAdapter<>(this, R.layout.da_item, actsList);
         adapter.notifyDataSetChanged();
         populateListView();
@@ -72,28 +96,62 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, AddActivity.class));
             }
         });
-        Button btnSave = (Button) findViewById(R.id.sendButton);
-        btnSave.setOnClickListener(new View.OnClickListener() {
+        btnSend = (Button) findViewById(R.id.sendButton);
+        btnSend.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                PutDataMapRequest dataMap = PutDataMapRequest.create("/wristaroo/customschedule");
-                dataMap.getDataMap().putStringArrayList("schedule", actsList);
-                PutDataRequest request = dataMap.asPutDataRequest().setUrgent();
 
-
-                PendingResult<DataApi.DataItemResult> result = Wearable.DataApi
-                        .putDataItem((googleApiClient), request);
-                System.out.println("Request: " + request);
-                System.out.println("Result: " + result);
-
+                if (!actsList.isEmpty()) {
+                    PutDataMapRequest putDataMapReq = PutDataMapRequest.create("/wristaroo");
+                    DataMap map = putDataMapReq.getDataMap();
+                    map.putStringArrayList(WEAR_MESSAGE_PATH, actsList);
+                    System.out.println("[mobile] - StringArray /hopefully/ put");
+                    map.putLong(TIME_MESSAGE_PATH, System.currentTimeMillis());
+                    System.out.println("[mobile] - Timestamp /hopefully/ put");
+                    PutDataRequest putDataReq = putDataMapReq.asPutDataRequest().setUrgent();
+                    PendingResult<DataApi.DataItemResult> pendingResult = Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
+                    System.out.println(putDataReq);
+                }
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+
+        System.out.println("[mobile] - mGoogleApiClient.connect() called");
+    }
+
+    @Override
+    protected void onStop() {
+        if (null != mGoogleApiClient && mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+            System.out.println("[mobile] - mGoogleApiClient.disconnect() called");
+        }
+        super.onStop();
     }
 
     private void populateListView() {
         list = (ListView) findViewById(R.id.listViewAdd);
         list.setAdapter(adapter);
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        System.out.println("[mobile] - onConnected() success");
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }
 
