@@ -23,30 +23,35 @@ public class DataLayerListenerService extends WearableListenerService {
     private static final String TAG = "DataLayerSample";
     private static final String START_ACTIVITY_PATH = "/start-activity";
     private static final String DATA_ITEM_RECEIVED_PATH = "/data-item-received";
+    GoogleApiClient mGoogleApiClient;
 
     @Override
     public void onDataChanged(DataEventBuffer dataEvents) {
         if (Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, "onDataChanged: " + dataEvents);
+            Log.d(TAG, "[DLLS] - onDataChanged: " + dataEvents);
         }
-        final List events = FreezableUtils
+        List<DataEvent> events = FreezableUtils
                 .freezeIterable(dataEvents);
 
-        GoogleApiClient googleApiClient = new GoogleApiClient.Builder(this)
+        System.out.println("[DLLS] - onDataChanged:");
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Wearable.API)
                 .build();
 
         ConnectionResult connectionResult =
-                googleApiClient.blockingConnect(30, TimeUnit.SECONDS);
+                mGoogleApiClient.blockingConnect(5, TimeUnit.SECONDS);
 
         if (!connectionResult.isSuccess()) {
-            Log.e(TAG, "Failed to connect to GoogleApiClient.");
+            Log.e(TAG, "[DLLS] - Failed to connect to GoogleApiClient.");
             return;
+        } else {
+            Log.e(TAG, "[DLLS] - Connected to GoogleApiClient.");
         }
 
         // Loop through the events and send a message
         // to the node that created the data item.
-        for (DataEvent event : dataEvents) {
+        for (DataEvent event : events) {
             Uri uri = event.getDataItem().getUri();
 
             // Get the node id from the host value of the URI
@@ -55,7 +60,7 @@ public class DataLayerListenerService extends WearableListenerService {
             byte[] payload = uri.toString().getBytes();
 
             // Send the RPC
-            Wearable.MessageApi.sendMessage(googleApiClient, nodeId,
+            Wearable.MessageApi.sendMessage(mGoogleApiClient, nodeId,
                     DATA_ITEM_RECEIVED_PATH, payload);
         }
     }

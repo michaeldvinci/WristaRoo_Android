@@ -14,8 +14,6 @@ import android.widget.ListView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.wearable.DataApi;
 import com.google.android.gms.wearable.DataEvent;
 import com.google.android.gms.wearable.DataEventBuffer;
@@ -106,10 +104,12 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onDataChanged(DataEventBuffer dataEvents) {
+        Log.i("Andy", "Test");
         for (DataEvent event : dataEvents) {
             if (event.getType() == DataEvent.TYPE_CHANGED) {
                 DataItem item = event.getDataItem();
                 if (item.getUri().getPath().compareTo("/wristaroo") == 0) {
+                    System.out.println("[wear] - it's definitely /wristaroo");
                     DataMap dataMap = DataMapItem.fromDataItem(item).getDataMap();
                     updateCustomList(dataMap.getStringArrayList(WEAR_MESSAGE_PATH));
                     System.out.println("[wear] - data changed");

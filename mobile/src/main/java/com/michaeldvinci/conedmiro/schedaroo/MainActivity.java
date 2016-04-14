@@ -18,8 +18,6 @@ import android.widget.ListView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.wearable.DataApi;
 import com.google.android.gms.wearable.DataMap;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
@@ -94,19 +92,25 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
 
-                if (!actsList.isEmpty()) {
-                    PutDataMapRequest putDataMapReq = PutDataMapRequest.create("/wristaroo");
-                    DataMap map = putDataMapReq.getDataMap();
-                    map.putStringArrayList(WEAR_MESSAGE_PATH, actsList);
-                    System.out.println("[mobile] - StringArray /hopefully/ put");
-                    map.putLong(TIME_MESSAGE_PATH, System.currentTimeMillis());
-                    System.out.println("[mobile] - Timestamp /hopefully/ put");
-                    PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
-                    PendingResult<DataApi.DataItemResult> pendingResult = Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
-                    System.out.println(putDataReq);
-                }
+                sendToWearable();
+
             }
         });
+    }
+
+    private void sendToWearable() {
+        if (!actsList.isEmpty()) {
+            System.out.println("[mobile] - actsList is NOT empty");
+            PutDataMapRequest putDataMapReq = PutDataMapRequest.create("/wristaroo");
+            DataMap map = putDataMapReq.getDataMap();
+            map.putInt("array", 90);
+            System.out.println("[mobile] - StringArray /hopefully/ put");
+            map.putLong(TIME_MESSAGE_PATH, System.currentTimeMillis());
+            System.out.println("[mobile] - Timestamp /hopefully/ put");
+            PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
+            Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
+            System.out.println(putDataReq);
+        }
     }
 
     @Override
