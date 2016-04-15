@@ -8,11 +8,11 @@ import java.util.ArrayList;
 public class customSched {
     private static customSched mInstance = null;
 
-    private ArrayList<String> customSched;
+    private ArrayList<String> customSchedule;
 
     private customSched() {
 
-        customSched = new ArrayList<String>();
+        customSchedule = new ArrayList<String>();
 
     }
 
@@ -25,19 +25,19 @@ public class customSched {
 
     public customSched(ArrayList<String> customSched) {
 
-        this.customSched = customSched;
+        this.customSchedule = customSched;
 
     }
 
     public ArrayList<String> getCustom() {
 
-        return this.customSched;
+        return this.customSchedule;
 
     }
 
     public void setCustom(ArrayList<String> input) {
 
-        customSched = input;
+        customSchedule = input;
 
     }
 }

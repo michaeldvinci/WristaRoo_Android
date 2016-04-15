@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements
             DataMap map = putDataMapReq.getDataMap();
             map.putStringArrayList(WEAR_MESSAGE_PATH, actsList);
             System.out.println("[mobile] - StringArray /hopefully/ put");
+            System.out.println("[mobile] - " + actsList);
             map.putLong(TIME_MESSAGE_PATH, System.currentTimeMillis());
             System.out.println("[mobile] - Timestamp /hopefully/ put");
             PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();

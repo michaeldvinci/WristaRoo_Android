@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.wearable.view.WatchViewStub;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -33,7 +32,6 @@ public class MainActivity extends Activity implements
     static String[] choicesS = {"Custom Schedule", "Full Schedule"};
     static ArrayList<String> choicesList = new ArrayList<>(Arrays.asList(choicesS));
     ArrayList<String> customList = null;
-    customSched customSched;
     ArrayAdapter adapter;
     ListView list;
     Intent intent;
@@ -69,6 +67,7 @@ public class MainActivity extends Activity implements
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         intent = new Intent(MainActivity.this, byDayActivity.class);
                         intent.putExtra("schedExtra", parent.getAdapter().getItem(position).toString());
+                        intent.putStringArrayListExtra("customList", customList);
                         startActivity(intent);
                     }
                 });
@@ -107,7 +106,6 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onDataChanged(DataEventBuffer dataEvents) {
-        Log.i("Andy", "Test");
         for (DataEvent event : dataEvents) {
             if (event.getType() == DataEvent.TYPE_CHANGED) {
                 DataItem item = event.getDataItem();
@@ -136,8 +134,8 @@ public class MainActivity extends Activity implements
     private void updateCustomList(ArrayList<String> c) {
 
         customList = c;
-        System.out.println("[wear] - customList(input): " + customList);
-        customSched.setCustom(customList);
+        System.out.println("[wear] - customList(input): " + c);
+        //customSched.setCustom(customList);
         System.out.println("[wear] - Custom Sched Set");
         System.out.println(" ");
         System.out.println(" ");

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -46,6 +47,7 @@ public class byChoiceActivity extends Activity {
                             intent.putExtra("dayExtra", getIntent().getExtras().getString("dayExtra"));
                             System.out.println("howExtra: " + parent.getAdapter().getItem(position).toString());
                             intent.putExtra("howExtra",parent.getAdapter().getItem(position).toString());
+                            intent.putStringArrayListExtra("customList",getIntent().getExtras().getStringArrayList("customList"));
                             startActivity(intent);
                         }
                         if (parent.getAdapter().getItem(position).toString().equals("By Time")) {
@@ -56,6 +58,7 @@ public class byChoiceActivity extends Activity {
                             intent.putExtra("dayExtra", getIntent().getExtras().getString("dayExtra"));
                             System.out.println("howExtra: " + parent.getAdapter().getItem(position).toString());
                             intent.putExtra("howExtra",parent.getAdapter().getItem(position).toString());
+                            intent.putStringArrayListExtra("customList",getIntent().getExtras().getStringArrayList("customList"));
                             startActivity(intent);
                         }
                     }

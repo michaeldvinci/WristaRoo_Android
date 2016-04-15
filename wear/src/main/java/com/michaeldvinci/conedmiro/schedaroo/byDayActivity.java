@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -28,6 +29,9 @@ public class byDayActivity extends Activity {
         setContentView(R.layout.activity_main);
         final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
         adapter = new ArrayAdapter<>(this, R.layout.da_item, choicesList);
+
+        System.out.println("Data: " + getIntent().getExtras().getStringArrayList("customList"));
+
         stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
             @Override
             public void onLayoutInflated(WatchViewStub stub) {
@@ -41,6 +45,7 @@ public class byDayActivity extends Activity {
                         intent = new Intent(byDayActivity.this, byChoiceActivity.class);
                         intent.putExtra("schedExtra",getIntent().getExtras().getString("schedExtra"));
                         intent.putExtra("dayExtra", parent.getAdapter().getItem(position).toString());
+                        intent.putStringArrayListExtra("customList",getIntent().getExtras().getStringArrayList("customList"));
                         startActivity(intent);
                     }
                 });

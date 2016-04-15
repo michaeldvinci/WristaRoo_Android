@@ -202,10 +202,13 @@ public class byTimeActivity extends Activity {
         dayExtra = getIntent().getExtras().getString("dayExtra");
         schedExtra = getIntent().getExtras().getString("schedExtra");
         howExtra = getIntent().getExtras().getString("howExtra");
+        data = getIntent().getExtras().getStringArrayList("customList");
 
         System.out.println("dayExtra: " + dayExtra);
         System.out.println("schedExtra: " + schedExtra);
         System.out.println("howExtra: " + howExtra);
+
+        System.out.println("customList: " + data);
 
         switch(dayExtra) {
             case "Thursday":
@@ -213,8 +216,8 @@ public class byTimeActivity extends Activity {
                     setStage(thTime);
                 }
                 if(schedExtra.equals("Custom Schedule")) {
-                    if (customSched.getCustom().size() > 0) {
-                        adapter = new ArrayAdapter<>(this, R.layout.da_item, customSched.getCustom());
+                    if (data.size() > 0) {
+                        adapter = new ArrayAdapter<>(this, R.layout.da_item, data);
                     } else {
                         setStage(error);
                     }
