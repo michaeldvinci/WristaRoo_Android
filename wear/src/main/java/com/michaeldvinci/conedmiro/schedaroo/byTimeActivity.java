@@ -5,20 +5,11 @@ package com.michaeldvinci.conedmiro.schedaroo;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.wearable.view.WatchViewStub;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.wearable.DataApi;
-import com.google.android.gms.wearable.DataEvent;
-import com.google.android.gms.wearable.DataEventBuffer;
-import com.google.android.gms.wearable.DataItem;
-import com.google.android.gms.wearable.DataMap;
-import com.google.android.gms.wearable.DataMapItem;
-import com.google.android.gms.wearable.Wearable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -222,8 +213,8 @@ public class byTimeActivity extends Activity {
                     setStage(thTime);
                 }
                 if(schedExtra.equals("Custom Schedule")) {
-                    if (data.size() > 0) {
-                        adapter = new ArrayAdapter<>(this, R.layout.da_item, data);
+                    if (customSched.getCustom().size() > 0) {
+                        adapter = new ArrayAdapter<>(this, R.layout.da_item, customSched.getCustom());
                     } else {
                         setStage(error);
                     }

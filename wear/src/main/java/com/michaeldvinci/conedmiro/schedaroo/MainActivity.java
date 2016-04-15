@@ -32,6 +32,7 @@ public class MainActivity extends Activity implements
 
     static String[] choicesS = {"Custom Schedule", "Full Schedule"};
     static ArrayList<String> choicesList = new ArrayList<>(Arrays.asList(choicesS));
+    ArrayList<String> customList = null;
     customSched customSched;
     ArrayAdapter adapter;
     ListView list;
@@ -51,6 +52,8 @@ public class MainActivity extends Activity implements
                 .addOnConnectionFailedListener(this)
                 .build();
         mGoogleApiClient.connect();
+
+        com.michaeldvinci.conedmiro.schedaroo.customSched.getInstance().setCustom(choicesList);
 
         final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
         adapter = new ArrayAdapter<>(this, R.layout.da_item, choicesList);
@@ -113,6 +116,7 @@ public class MainActivity extends Activity implements
                     DataMap dataMap = DataMapItem.fromDataItem(item).getDataMap();
                     updateCustomList(dataMap.getStringArrayList(WEAR_MESSAGE_PATH));
                     System.out.println("[wear] - data changed");
+                    //customSched.setCustom(dataMap.getStringArrayList(WEAR_MESSAGE_PATH));
                 }
             }
 
@@ -131,8 +135,12 @@ public class MainActivity extends Activity implements
 
     private void updateCustomList(ArrayList<String> c) {
 
-        customSched = new customSched(c);
-
+        customList = c;
+        System.out.println("[wear] - customList(input): " + customList);
+        customSched.setCustom(customList);
         System.out.println("[wear] - Custom Sched Set");
+        System.out.println(" ");
+        System.out.println(" ");
+        //System.out.println("customSched = " + customSched.getCustom());
     }
 }

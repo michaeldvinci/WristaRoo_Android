@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements
             System.out.println("[mobile] - actsList is NOT empty");
             PutDataMapRequest putDataMapReq = PutDataMapRequest.create("/wristaroo");
             DataMap map = putDataMapReq.getDataMap();
-            map.putInt("array", 90);
+            map.putStringArrayList(WEAR_MESSAGE_PATH, actsList);
             System.out.println("[mobile] - StringArray /hopefully/ put");
             map.putLong(TIME_MESSAGE_PATH, System.currentTimeMillis());
             System.out.println("[mobile] - Timestamp /hopefully/ put");
