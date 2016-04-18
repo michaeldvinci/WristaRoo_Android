@@ -3,6 +3,7 @@ package com.michaeldvinci.conedmiro.schedaroo;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.wearable.view.WatchViewStub;
@@ -23,6 +24,8 @@ import com.google.android.gms.wearable.Wearable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class MainActivity extends Activity implements
         GoogleApiClient.ConnectionCallbacks,
@@ -114,7 +117,13 @@ public class MainActivity extends Activity implements
                     DataMap dataMap = DataMapItem.fromDataItem(item).getDataMap();
                     updateCustomList(dataMap.getStringArrayList(WEAR_MESSAGE_PATH));
                     System.out.println("[wear] - data changed");
-                    //customSched.setCustom(dataMap.getStringArrayList(WEAR_MESSAGE_PATH));
+
+                    Set<String> tasksSet = new HashSet<>(dataMap.getStringArrayList(WEAR_MESSAGE_PATH));
+                    PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                            .edit()
+                            .putStringSet("customSched", tasksSet)
+                            .commit();
+                    System.out.println("Stored in SP");
                 }
             }
 

@@ -41,22 +41,16 @@ public class byChoiceActivity extends Activity {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         if (parent.getAdapter().getItem(position).toString().equals("By Stage")) {
                             intent = new Intent(byChoiceActivity.this, byStageActivity.class);
-                            System.out.println("schedExtra: " + getIntent().getExtras().getString("schedExtra"));
                             intent.putExtra("schedExtra", getIntent().getExtras().getString("schedExtra"));
-                            System.out.println("dayExtra: " + getIntent().getExtras().getString("dayExtra"));
                             intent.putExtra("dayExtra", getIntent().getExtras().getString("dayExtra"));
-                            System.out.println("howExtra: " + parent.getAdapter().getItem(position).toString());
                             intent.putExtra("howExtra",parent.getAdapter().getItem(position).toString());
                             intent.putStringArrayListExtra("customList",getIntent().getExtras().getStringArrayList("customList"));
                             startActivity(intent);
                         }
                         if (parent.getAdapter().getItem(position).toString().equals("By Time")) {
                             intent = new Intent(byChoiceActivity.this, byTimeActivity.class);
-                            System.out.println("schedExtra: " + getIntent().getExtras().getString("schedExtra"));
                             intent.putExtra("schedExtra", getIntent().getExtras().getString("schedExtra"));
-                            System.out.println("dayExtra: " + getIntent().getExtras().getString("dayExtra"));
                             intent.putExtra("dayExtra", getIntent().getExtras().getString("dayExtra"));
-                            System.out.println("howExtra: " + parent.getAdapter().getItem(position).toString());
                             intent.putExtra("howExtra",parent.getAdapter().getItem(position).toString());
                             intent.putStringArrayListExtra("customList",getIntent().getExtras().getStringArrayList("customList"));
                             startActivity(intent);

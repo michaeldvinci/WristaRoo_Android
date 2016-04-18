@@ -5,27 +5,26 @@ package com.michaeldvinci.conedmiro.schedaroo;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.wearable.view.WatchViewStub;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.google.android.gms.common.api.GoogleApiClient;
-
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class byTimeActivity extends Activity {
     ArrayList<String> choicesList;
     ArrayAdapter adapter;
     ListView list;
     ArrayList<String> data = new ArrayList<>();
-    customSched customSched;
     ArrayList<String> customAL = new ArrayList<>();
     String dayExtra;
     String howExtra;
     String schedExtra;
-    GoogleApiClient mGoogleApiClient;
-    private final String WEAR_MESSAGE_PATH = "com.michaeldvinci.key.schedule";
+    Set<String> tasksSet;
 
     static String xmas = "Christmas Barn";
     static String other = "The Other Tent";
@@ -204,11 +203,22 @@ public class byTimeActivity extends Activity {
         howExtra = getIntent().getExtras().getString("howExtra");
         data = getIntent().getExtras().getStringArrayList("customList");
 
-        System.out.println("dayExtra: " + dayExtra);
-        System.out.println("schedExtra: " + schedExtra);
-        System.out.println("howExtra: " + howExtra);
-
-        System.out.println("customList: " + data);
+        if(!PreferenceManager.getDefaultSharedPreferences(this)
+                .getStringSet("customSched", new HashSet<String>()).isEmpty()) {
+            tasksSet = PreferenceManager.getDefaultSharedPreferences(this)
+                    .getStringSet("customSched", new HashSet<String>());
+            customAL = new ArrayList<>(tasksSet);
+            System.out.println("exists in SP");
+        }
+        else {
+            customAL = new ArrayList<>();
+            customAL.add("No Data Supplied");
+            Set<String> tasksSet = new HashSet<>(customAL);
+            PreferenceManager.getDefaultSharedPreferences(this)
+                    .edit()
+                    .putStringSet("customSched", tasksSet)
+                    .commit();
+        }
 
         switch(dayExtra) {
             case "Thursday":
@@ -216,8 +226,8 @@ public class byTimeActivity extends Activity {
                     setStage(thTime);
                 }
                 if(schedExtra.equals("Custom Schedule")) {
-                    if (data.size() > 0) {
-                        adapter = new ArrayAdapter<>(this, R.layout.da_item, data);
+                    if (customAL.size() > 0) {
+                        adapter = new ArrayAdapter<>(this, R.layout.da_item, customAL);
                     } else {
                         setStage(error);
                     }

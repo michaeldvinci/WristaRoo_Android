@@ -4,7 +4,6 @@
 package com.michaeldvinci.conedmiro.schedaroo;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.wearable.view.WatchViewStub;
 import android.widget.ArrayAdapter;
@@ -74,12 +73,6 @@ public class byStageActActivity extends Activity {
         schedExtra = getIntent().getExtras().getString("schedExtra");
         howExtra = getIntent().getExtras().getString("howExtra");
         stageExtra = getIntent().getExtras().getString("stageExtra");
-
-        System.out.println("dayExtra: " + dayExtra);
-        System.out.println("schedExtra: " + schedExtra);
-        System.out.println("howExtra: " + howExtra);
-        System.out.println("stageExtra: " + stageExtra);
-
 
         switch (dayExtra) {
             case "Thursday":

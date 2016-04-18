@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -37,11 +38,19 @@ public class MainActivity extends AppCompatActivity implements
     ListView list;
     Button btnSend;
     GoogleApiClient mGoogleApiClient;
+    DataMap map;
     private final String WEAR_MESSAGE_PATH = "com.michaeldvinci.key.schedule";
     private final String TIME_MESSAGE_PATH = "com.michaeldvinci.key.timestamp";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Wearable.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+
 
         if(!PreferenceManager.getDefaultSharedPreferences(this)
                 .getStringSet("wristaroo", new HashSet<String>()).isEmpty()) {
@@ -60,12 +69,6 @@ public class MainActivity extends AppCompatActivity implements
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(Wearable.API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
 
         adapter = new ArrayAdapter<>(this, R.layout.da_item, actsList);
         adapter.notifyDataSetChanged();
@@ -100,17 +103,23 @@ public class MainActivity extends AppCompatActivity implements
 
     private void sendToWearable() {
         if (!actsList.isEmpty()) {
-            System.out.println("[mobile] - actsList is NOT empty");
             PutDataMapRequest putDataMapReq = PutDataMapRequest.create("/wristaroo");
-            DataMap map = putDataMapReq.getDataMap();
+            map = putDataMapReq.getDataMap();
+
+            System.out.println("1");
+
             map.putStringArrayList(WEAR_MESSAGE_PATH, actsList);
-            System.out.println("[mobile] - StringArray /hopefully/ put");
-            System.out.println("[mobile] - " + actsList);
             map.putLong(TIME_MESSAGE_PATH, System.currentTimeMillis());
-            System.out.println("[mobile] - Timestamp /hopefully/ put");
+
+            PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                    .edit()
+                    .putString("dataMap", Base64.encodeToString(map.toByteArray(), Base64.DEFAULT))
+                    .commit();
+
             PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
             Wearable.DataApi.putDataItem(mGoogleApiClient, putDataReq);
-            System.out.println(putDataReq);
+
+            System.out.println("2");
         }
     }
 
@@ -138,7 +147,6 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        System.out.println("[mobile] - onConnected() success");
     }
 
     @Override
