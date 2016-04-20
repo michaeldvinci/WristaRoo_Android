@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimaryDark">#802499</color>
     <color name="colorAccent">#FF4081</color>
     <drawable name="red_color">#FA032C</drawable>
     <drawable name="blue_color">#061EF2</drawable>
+    <color name="bgPurple">#8B2EA4</color>
 </resources>

@@ -127,7 +127,54 @@ public class AddActivity extends AppCompatActivity {
             "Roman Gianarthur",
             "Lany",
             "Con Brio",
-            "Flux Capacitor"};
+            "Flux Capacitor",
+            "Lael Neale",
+            "Mail the Horse",
+            "FKJ",
+            "Joseph",
+            "Doe Paoro",
+            "Wet",
+            "Hinds",
+            "Full Service Party",
+            "Bryson Tiller",
+            "Bob Moses",
+            "Amanda Shires",
+            "Arkells",
+            "Holy White Hound",
+            "Luke Bell",
+            "Whitney",
+            "Andrew Combs",
+            "Mothers",
+            "Powers",
+            "Public Access TV",
+            "Henry Wagons",
+            "Firekid",
+            "Lane 8",
+            "Tiki Disco",
+            "Amasa Hines",
+            "Aubrie Sellers",
+            "Cardiknox",
+            "Dylan LeBlanc",
+            "Grace Mitchell",
+            "Grandma Sprrow",
+            "Promised Land Sound",
+            "Issac Gracie",
+            "Joe Fertler & the Rainbow Seekers",
+            "Lawrence",
+            "The Record Company",
+            "Sir the BaptistMArgaret Glaspy",
+            "NSR",
+            "Red Bull Music Academy",
+            "Maren Morris",
+            "Sun Club",
+            "Sunflower Bean",
+            "Finish Ticket",
+            "Dawn",
+            "Korey Dane",
+            "Polly A.",
+            "Swim Deep",
+            "Austin Plaine"
+    };
 
     static ArrayList<String> actsList;
     ArrayAdapter adapter;
@@ -149,18 +196,6 @@ public class AddActivity extends AppCompatActivity {
         }
 
         super.onCreate(savedInstanceState);
-
-        /**
-        AlertDialog alertDialog = new AlertDialog.Builder(AddActivity.this).create();
-        alertDialog.setMessage("Long Press to Add Artist");
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        alertDialog.show();
-         **/
 
         setContentView(R.layout.activity_add);
         adapter = new ArrayAdapter<>(this, R.layout.da_item, actsFull);

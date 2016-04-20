@@ -4,6 +4,8 @@
     android:layout_height="match_parent"
     android:paddingTop="15sp"
     android:paddingBottom="15sp"
-    android:textSize="20sp">
+    android:textSize="20sp"
+    android:textColor="#FFFFFF"
+    android:textAlignment="center">
 
 </TextView>

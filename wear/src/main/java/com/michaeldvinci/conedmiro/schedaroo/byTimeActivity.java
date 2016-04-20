@@ -255,6 +255,7 @@ public class byTimeActivity extends Activity {
     private void setStage(String[] dayStage) {
         choicesList = new ArrayList<>(Arrays.asList(dayStage));
         adapter = new ArrayAdapter<>(this, R.layout.da_item, choicesList);
+
         adapter.notifyDataSetChanged();
     }
 }

@@ -11,6 +11,8 @@
         android:textSize="20sp"
         android:id="@+id/da_item1"
         android:background="@drawable/my_selector"
+        android:dividerHeight="0dp"
+        android:divider="@null"
         />
         
         <CheckBox
